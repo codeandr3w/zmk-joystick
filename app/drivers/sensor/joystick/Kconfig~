@@ -1,0 +1,12 @@
+# Copyright (c) 2020 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+menuconfig JOY
+	bool "JOY Analogue Sensor"
+	select ADC
+	help
+	  Enable driver for JOY analogue sensors.
+
+if JOY
+
+endif # JOY
