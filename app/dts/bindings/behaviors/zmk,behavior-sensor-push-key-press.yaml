@@ -1,0 +1,22 @@
+# Copyright (c) 2020 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+description: Sensor push left/right key press behavior
+
+compatible: "zmk,behavior-sensor-push-key-press"
+
+properties:
+  label:
+    type: string
+    required: true
+  min_push:
+    type: int
+    default: 512
+  "#sensor-binding-cells":
+    type: int
+    required: true
+    const: 2
+
+sensor-binding-cells:
+  - param1
+  - param2

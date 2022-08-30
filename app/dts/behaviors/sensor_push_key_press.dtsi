@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2020 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+/ {
+	behaviors {
+		/omit-if-no-ref/ up_down_cp: up_down_kp: behavior_sensor_push_key_press {
+			compatible = "zmk,behavior-sensor-push-key-press";
+			label = "PUSH_KEY_PRESS";
+			#sensor-binding-cells = <2>;
+		};
+	};
+};
