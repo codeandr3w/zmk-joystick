@@ -1,0 +1,12 @@
+# Copyright (c) 2020 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if SHIELD_EDINBURGH41
+
+config ZMK_KEYBOARD_NAME
+    default "Edinburgh41"
+
+config JOYSTICK
+	default y
+
+endif

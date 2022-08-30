@@ -1,0 +1,8 @@
+file_format: "1"
+id: edinburgh41
+name: EDINBURGH41
+type: shield
+url: https://github.com/gtips/reviung/tree/master/reviung41
+requires: [pro_micro]
+features:
+  - keys
