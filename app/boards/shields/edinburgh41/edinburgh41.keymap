@@ -9,6 +9,7 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/rgb.h>
 #include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/mouse.h>
 
 / {
         keymap {
@@ -70,7 +71,7 @@
    &none           &ext_power EP_TOG &none           &none     &bootloader &none              &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &bt BT_CLR
    &rgb_ug RGB_BRD &rgb_ug RGB_SAD &rgb_ug RGB_HUD   &rgb_ug RGB_EFR &none &none              &kp HOME  &kp PGDN       &kp PGUP        &kp END        &none        &none
    &rgb_ug RGB_BRI &rgb_ug RGB_SAI &rgb_ug RGB_HUI   &rgb_ug RGB_EFF &none &rgb_ug RGB_TOG    &reset       &none        &none        &none        &none        &none
-                                                             &trans      &trans       &tog 3        &trans      &trans
+                                                             &trans      &trans &mkp LCLK        &trans &mkp RCLK
                         >;
                 };
         };

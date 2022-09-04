@@ -84,12 +84,10 @@ static const uint8_t zmk_hid_report_desc[] = {
 #else
 #error "A proper consumer HID report usage range must be selected"
 #endif
-<<<<<<< HEAD
     HID_REPORT_COUNT(CONFIG_ZMK_HID_CONSUMER_REPORT_SIZE),
     /* INPUT (Data,Ary,Abs) */
     HID_INPUT(0x00),
     HID_END_COLLECTION,
-=======
     /* REPORT_COUNT (CONFIG_ZMK_HID_CONSUMER_REPORT_SIZE) */
     HID_GI_REPORT_COUNT,
     CONFIG_ZMK_HID_CONSUMER_REPORT_SIZE,
@@ -207,7 +205,6 @@ static const uint8_t zmk_hid_report_desc[] = {
     HID_MI_COLLECTION_END,
     /* END COLLECTION */
     HID_MI_COLLECTION_END,
->>>>>>> ee855f4d6736da4d696e74f7875d209c7c173a11
 };
 
 // struct zmk_hid_boot_report

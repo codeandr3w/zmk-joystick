@@ -9,6 +9,7 @@
 #include <zephyr.h>
 #include <zmk/event_manager.h>
 #include <zmk/keys.h>
+#include <dt-bindings/zmk/hid_usage_pages.h>
 
 struct zmk_keycode_state_changed {
     uint16_t usage_page;
