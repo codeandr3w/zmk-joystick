@@ -26,8 +26,7 @@ struct joy_config {
 
 struct joy_data {
     const struct device *adc;
-    bool setup;
-    bool on;
+    int setup;
     
     struct adc_channel_cfg acc;
     struct adc_sequence as;

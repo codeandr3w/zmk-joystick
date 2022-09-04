@@ -33,8 +33,6 @@ static int joy_get_state(const struct device *dev) {
 
     int disable_power = 0;
 
-    LOG_DBG("get_state:start");
-    
     if (drv_data->adc==NULL)
         return 0;
 
@@ -62,7 +60,6 @@ static int joy_get_state(const struct device *dev) {
     
     if (rc == 0) {
         int32_t val = drv_data->adc_raw;
-	LOG_DBG("Joy raw: %d", val);
         if (val > 4096) 
             val = 4096;
         return val;
@@ -123,21 +120,23 @@ static int joy_channel_get(const struct device *dev, enum sensor_channel chan,
 
 static void zmk_joy_work(struct k_work *work) {
     struct joy_data *drv_data = CONTAINER_OF(work, struct joy_data, work);
-    LOG_DBG("joy_work: %p, %d, %d", drv_data, drv_data->setup, drv_data->as.channels);
+    const struct joy_config *drv_cfg = drv_data->dev->config;
     
     if (drv_data->setup) {
         int rc = joy_sample_fetch (drv_data->dev, 0); // I think this might be unnecessary
         if (rc != 0) {
             LOG_DBG("Failed to update joystick value: %d.", rc);
         }
-        drv_data->handler (drv_data->dev, drv_data->trigger);
+        if (abs(drv_data->value) >= drv_cfg->min_on || drv_data->on) {
+            drv_data->handler (drv_data->dev, drv_data->trigger);
+            drv_data->on = abs(drv_data->value) >= drv_cfg->min_on;
+        }
     }
 }
 
 static void zmk_joy_timer(struct k_timer *timer) { 
     const struct device *dev = k_timer_user_data_get(timer);
     struct joy_data *drv_data = CONTAINER_OF(timer, struct joy_data, timer);
-    LOG_DBG("joy timer: %p, %p", drv_data, dev->data);
     k_work_submit(&drv_data->work); 
 }
 
@@ -150,6 +149,7 @@ int joy_trigger_set(const struct device *dev, const struct sensor_trigger *trig,
     
     drv_data->trigger = trig;
     drv_data->handler = handler;
+    drv_data->on = false;
     
     k_work_init (&drv_data->work, zmk_joy_work);
     k_timer_init (&drv_data->timer, zmk_joy_timer, NULL);
