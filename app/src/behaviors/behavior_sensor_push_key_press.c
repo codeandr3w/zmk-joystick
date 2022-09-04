@@ -49,7 +49,7 @@ static int on_sensor_binding_triggered(struct zmk_behavior_binding *binding,
         return err;
     }
 
-    LOG_DBG("push left keycode 0x%02X right keycode 0x%02X, value %d, old_pressed %d", binding->param1, binding->param2, value.val1, data->pressed);
+    LOG_DBG("push left keycode 0x%02X right keycode 0x%02X, raw value %d, old_pressed %d", binding->param1, binding->param2, value.val2, data->pressed);
 
     if (!pressed && data->pressed && data->pressed_keycode!=binding->param1 && data->pressed_keycode!=binding->param2) {
         // nothing is pressed, but another binding is pressed, so stick to that one
@@ -58,10 +58,10 @@ static int on_sensor_binding_triggered(struct zmk_behavior_binding *binding,
     } else if (!data->pressed && (abs(value.val1) < config->min_push)) {
         // not pushed enough to start a press
     } else if (value.val1 > 0) {
-        keycode = binding->param1;
+        keycode = binding->param2;
         pressed = true;
     } else if (value.val1 < 0) {
-        keycode = binding->param2;
+        keycode = binding->param1;
         pressed = true;
     }
     
