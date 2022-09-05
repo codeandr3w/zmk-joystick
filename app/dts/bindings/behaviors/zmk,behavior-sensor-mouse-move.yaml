@@ -1,0 +1,24 @@
+# Copyright (c) 2020 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+description: Sensor push mouse a variable amount
+
+compatible: "zmk,behavior-sensor-mouse-move"
+
+properties:
+  label:
+    type: string
+    required: true
+  speed:
+    type: int
+    default: 1024
+  dimension:
+    type: int
+    default: 1 # input sensor dimension 0-2
+  "#sensor-binding-cells":
+    type: int
+    required: true
+    const: 1
+
+sensor-binding-cells:
+  - param1 # output mouse dimension 0-1

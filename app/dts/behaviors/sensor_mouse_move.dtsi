@@ -1,0 +1,25 @@
+/*
+ * Copyright (c) 2020 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+/ {
+	behaviors {
+		/omit-if-no-ref/ up_down_mmv: up_down_mm: behavior_sensor_mouse_move {
+			compatible = "zmk,behavior-sensor-mouse-move";
+			label = "SENSOR_MOUSE_MOVE_Y";
+			dimension = <1>;
+			#sensor-binding-cells = <1>;
+		};
+	};
+
+	behaviors {
+		/omit-if-no-ref/ left_right_mmv: left_right_mm: behavior_sensor_mouse_move {
+			compatible = "zmk,behavior-sensor-mouse-move";
+			label = "SENSOR_MOUSE_MOVE_X";
+			dimension = <0>;
+			#sensor-binding-cells = <1>;
+		};
+	};
+};
