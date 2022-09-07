@@ -50,7 +50,14 @@ static int on_sensor_binding_triggered(struct zmk_behavior_binding *binding,
 
     // need to move mouse by value in dimension binding->param1
     int x=0, y=0;
-    int move = (config->speed * value.val1) >> 16;
+    int move = 0;
+    if (value.val1 != 0) {
+        move = (config->speed * value.val1 * value.val1) >> 20;
+        move += 1;
+        if (value.val1 < 0) {
+            move = -move;
+        }
+    }
     if (binding->param1 == 0) {
         x += move;
     } else if (binding->param1 == 1) {

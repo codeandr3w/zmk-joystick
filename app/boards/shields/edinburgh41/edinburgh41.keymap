@@ -56,10 +56,11 @@
 //                       |     | ADJ | BKSP |    |     |
                         bindings = <
    &kp MINUS &kp N1    &kp N2    &kp N3    &kp N4    &kp N5        &kp N6    &kp N7    &kp N8    &kp N9    &kp N0    &kp EQUAL
-   &trans &none &none &none  &none  &none      &mmv MOVE_LEFT    &mmv MOVE_UP &mmv MOVE_DOWN &mmv MOVE_RIGHT    &kp LBRC    &kp RBRC
-   &trans &kp NON_US_BSLH   &none  &none  &none  &none       &none    &none &msc SCROLL_UP    &msc SCROLL_DOWN   &none   &kp RSHFT
+   &trans &none &none &none  &none  &none        &kp HOME  &kp PGDN       &kp PGUP        &kp END   &kp SQT    &kp NON_US_HASH
+   &trans &kp NON_US_BSLH   &none  &none  &none  &none       &none    &none   &kp LBKT    &kp RBKT   &none   &kp RSHFT
                                &kp NON_US_HASH &trans             &kp BSPC        &trans      &trans
                         >;
+			sensor-bindings = <&up_down_kp NON_US_HASH SQT &up_down_kp LBRC RBRC>;
                 };
 
                 adjust_layer {
@@ -70,7 +71,7 @@
 //                                              |     |     |     |     |     |
                         bindings = <
    &kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &kp F11 &kp F12
-   &kp LCTRL &none &none   &none &none &none              &kp HOME  &kp PGDN       &kp PGUP        &kp END        &none        &none
+   &kp LCTRL &none &none   &none &none &none               &mmv MOVE_LEFT    &mmv MOVE_UP &mmv MOVE_DOWN &mmv MOVE_RIGHT      &none        &none
    &kp LSHFT &rgb_ug RGB_TOG &rgb_ug RGB_EFR   &rgb_ug RGB_SAI &rgb_ug RGB_BRD &rgb_ug RGB_SAD    &kp KP_NUM &none &msc SCROLL_UP    &msc SCROLL_DOWN       &none        &none
                                                              &trans      &trans &mkp LCLK     &mkp LCLK &mkp RCLK
                         >;

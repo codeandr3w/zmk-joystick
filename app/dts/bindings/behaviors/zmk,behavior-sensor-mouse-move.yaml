@@ -11,7 +11,7 @@ properties:
     required: true
   speed:
     type: int
-    default: 1024
+    default: 128
   dimension:
     type: int
     default: 1 # input sensor dimension 0-2

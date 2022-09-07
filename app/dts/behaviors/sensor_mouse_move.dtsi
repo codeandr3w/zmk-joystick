@@ -10,6 +10,7 @@
 			compatible = "zmk,behavior-sensor-mouse-move";
 			label = "SENSOR_MOUSE_MOVE_Y";
 			dimension = <1>;
+			speed = <16>;
 			#sensor-binding-cells = <1>;
 		};
 	};
@@ -19,6 +20,7 @@
 			compatible = "zmk,behavior-sensor-mouse-move";
 			label = "SENSOR_MOUSE_MOVE_X";
 			dimension = <0>;
+			speed = <16>;
 			#sensor-binding-cells = <1>;
 		};
 	};
