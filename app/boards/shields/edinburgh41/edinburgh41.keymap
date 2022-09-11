@@ -30,7 +30,7 @@
 
                         >;
 
-			sensor-bindings = <&up_down_kp UP DOWN &up_down_kp LEFT RIGHT>;
+			sensor-bindings = <&vary_kp UP DOWN &varx_kp LEFT RIGHT>;
                 };
 
                 lower_layer {
@@ -45,7 +45,7 @@
    &trans &rgb_ug RGB_TOG &rgb_ug RGB_EFF &rgb_ug RGB_HUI &rgb_ug RGB_BRI &out OUT_TOG        &kp HOME  &kp PG_DN &kp PG_UP &kp END &none &kp RSHFT
                                  &trans      &trans       &kp RET        &kp SPC      &kp LALT
                         >;
-			sensor-bindings = <&up_down_kp PGUP PGDN &up_down_kp HOME END>;
+			sensor-bindings = <&vary_kp PGUP PGDN &varx_kp HOME END>;
                 };
 
                 raise_layer {

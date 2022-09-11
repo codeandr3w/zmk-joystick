@@ -12,6 +12,7 @@
 #include <behaviors/reset.dtsi>
 #include <behaviors/sensor_rotate_key_press.dtsi>
 #include <behaviors/sensor_push_key_press.dtsi>
+#include <behaviors/sensor_var_key_press.dtsi>
 #include <behaviors/rgb_underglow.dtsi>
 #include <behaviors/bluetooth.dtsi>
 #include <behaviors/ext_power.dtsi>

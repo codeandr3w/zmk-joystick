@@ -27,7 +27,6 @@ struct behavior_sensor_mouse_move_config {
 
 static int behavior_sensor_mouse_move_init(const struct device *dev) { return 0; };
 
-
 static int on_sensor_binding_triggered(struct zmk_behavior_binding *binding,
                                        const struct device *sensor, int64_t timestamp) {
     struct sensor_value value;
