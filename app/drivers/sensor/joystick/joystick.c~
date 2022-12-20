@@ -45,7 +45,6 @@ static int joy_get_state(const struct device *dev) {
                 LOG_ERR("Unable to enable EXT_POWER: %d", rc);
             }
             k_sleep(K_MSEC(10)); // wait for charge to build up so ADC is ready
-            // reset timer because of the delay so it doesn't overwhelm the system with timers
             k_timer_start(&drv_data->timer, K_MSEC(1000/drv_cfg->frequency), K_MSEC(1000/drv_cfg->frequency));
             disable_power = 1;
         }
