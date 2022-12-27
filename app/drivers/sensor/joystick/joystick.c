@@ -45,8 +45,6 @@ static int joy_get_state(const struct device *dev) {
                 LOG_ERR("Unable to enable EXT_POWER: %d", rc);
             }
             k_sleep(K_MSEC(10)); // wait for charge to build up so ADC is ready
-            // reset timer because of the delay so it doesn't overwhelm the system with timers
-            k_timer_start(&drv_data->timer, K_MSEC(1000/drv_cfg->frequency), K_MSEC(1000/drv_cfg->frequency));
             disable_power = 1;
         }
     }
@@ -126,6 +124,7 @@ static void zmk_joy_work(struct k_work *work) {
     const struct joy_config *drv_cfg = drv_data->dev->config;
     
     if (drv_data->setup) {
+        k_timer_stop(&drv_data->timer);
         int rc = joy_sample_fetch (drv_data->dev, 0); // I think this might be unnecessary
         if (rc != 0) {
             LOG_DBG("Failed to update joystick value: %d.", rc);
@@ -135,6 +134,8 @@ static void zmk_joy_work(struct k_work *work) {
             drv_data->on = abs(drv_data->value) >= drv_cfg->min_on;
             LOG_DBG("Joystick triggered: val=%d, on=%d", drv_data->value, drv_data->on);
         }
+        // reset timer because of the delay so it doesn't overwhelm the system with timers
+        k_timer_start(&drv_data->timer, K_MSEC(1000/drv_cfg->frequency), K_MSEC(1000/drv_cfg->frequency));
     }
 }
 
