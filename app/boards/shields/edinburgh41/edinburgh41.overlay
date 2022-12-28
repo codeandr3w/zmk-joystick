@@ -78,29 +78,19 @@ RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5) RC(5,0) RC(5,1) RC(5,2) RC(5,3) 
 
     sensors {
         compatible = "zmk,keymap-sensors";
-        sensors = <&joystickx &joysticky>;
+        sensors = <&joystickxy>;
     };
 
-    joystickx: joystickx {
+    joystickxy: joystickxy {
         compatible = "joystick";
-        label = "JOYSTICKX";
-	io-channels = <&adc 0>;
+        label = "JOYSTICKXY";
+	io-channels = <&adc 5 &adc 0>;
 	status = "okay";
 	resolution = <512>;
 	frequency = <50>;
 	min_on = <200>;
+	num_axis = <2>;
     };
-
-    joysticky: joysticky {
-        compatible = "joystick";
-        label = "JOYSTICKY";
-	io-channels = <&adc 5>;
-	status = "okay";
-	resolution = <512>;
-	frequency = <50>;
-	min_on = <200>;
-    };
-
 };
 
 &adc {
