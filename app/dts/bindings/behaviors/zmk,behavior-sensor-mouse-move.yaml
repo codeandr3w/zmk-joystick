@@ -12,13 +12,10 @@ properties:
   speed:
     type: int
     default: 128
-  dimension:
+  dimensions:
     type: int
-    default: 1 # input sensor dimension 0-2
+    default: 2 # usually 2 for 2 dimensions, but can be 1 for x/y
   "#sensor-binding-cells":
     type: int
-    required: true
-    const: 1
+    const: 0
 
-sensor-binding-cells:
-  - param1 # output mouse dimension 0-1

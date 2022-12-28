@@ -6,9 +6,18 @@
 
 / {
 	behaviors {
-		/omit-if-no-ref/ up_down_cp: up_down_kp: behavior_sensor_push_key_press {
+		/omit-if-no-ref/ xy_kp: behavior_sensor_push_key_press_xy {
 			compatible = "zmk,behavior-sensor-push-key-press";
-			label = "PUSH_KEY_PRESS";
+			label = "PUSH_KEY_PRESS_XY_m1";
+			dimensions = <2>;
+			#sensor-binding-cells = <2>;
+		};
+		/omit-if-no-ref/ xy1_kp: behavior_sensor_push_key_press_1 {
+			compatible = "zmk,behavior-sensor-push-key-press";
+			label = "PUSH_KEY_PRESS_XY_1";
+			dimensions = <2>;
+			key_diff_x = <1>;
+			key_diff_y = <1>;
 			#sensor-binding-cells = <2>;
 		};
 	};

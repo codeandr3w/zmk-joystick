@@ -28,6 +28,8 @@ struct behavior_sensor_push_key_press_data {
 
 struct behavior_sensor_push_key_press_config {
   int min_push;
+  int dimensions;
+  int key_diff [2];
 };
 
 static int on_sensor_binding_triggered(struct zmk_behavior_binding *binding,
@@ -36,33 +38,37 @@ static int on_sensor_binding_triggered(struct zmk_behavior_binding *binding,
     int err;
     uint32_t keycode;
     int pressed = false;
+    int pressed_val = 0;
     
     const struct device *dev = device_get_binding(binding->behavior_dev);
     struct behavior_sensor_push_key_press_data *data = dev->data;
     struct behavior_sensor_push_key_press_config *config = dev->config;
-    
 
-    err = sensor_channel_get(sensor, SENSOR_CHAN_PRESS, &value);
+    for (int dim=0; dim<config->dimensions; dim++) {
+        err = sensor_channel_get(sensor, SENSOR_CHAN_ACCEL_X+dim, &value);
 
-    if (err) {
-        LOG_WRN("Failed to ge sensor rotation value: %d", err);
-        return err;
-    }
+        if (err) {
+            LOG_WRN("Failed to ge sensor %d rotation value: %d", dim, err);
+            value.val1 = 0;
+        }
 
-    LOG_DBG("push left keycode 0x%02X right keycode 0x%02X, raw value %d, old_pressed %d", binding->param1, binding->param2, value.val2, data->pressed);
+        LOG_DBG("push left keycode 0x%02X right keycode 0x%02X, raw value %d, old_pressed %d", binding->param1, binding->param2, value.val2, data->pressed);
+        
+        int param = (&binding->param1) [dim];
 
-    if (!pressed && data->pressed && data->pressed_keycode!=binding->param1 && data->pressed_keycode!=binding->param2) {
-        // nothing is pressed, but another binding is pressed, so stick to that one
-        pressed = data->pressed;
-        keycode = data->pressed_keycode;
-    } else if (!data->pressed && (abs(value.val1) < config->min_push)) {
-        // not pushed enough to start a press
-    } else if (value.val1 > 0) {
-        keycode = binding->param2;
-        pressed = true;
-    } else if (value.val1 < 0) {
-        keycode = binding->param1;
-        pressed = true;
+        if (!data->pressed && (abs(value.val1) < config->min_push)) {
+            // not pushed enough to start a press
+        } else if (abs(value.val1) < pressed_val) {
+            // not pushed as much as another direction
+        } else if (value.val1 > 0) {
+            keycode = param + config->key_diff [dim];
+            pressed_val = value.val1;
+            pressed = true;
+        } else if (value.val1 < 0) {
+            keycode = param;
+            pressed_val = -value.val1;
+            pressed = true;
+        }
     }
     
     if (pressed && data->pressed) {
@@ -96,6 +102,9 @@ static const struct behavior_driver_api behavior_sensor_push_key_press_driver_ap
     static struct behavior_sensor_push_key_press_data sensor_push_key_press_data_##n; 		   \
     static struct behavior_sensor_push_key_press_config sensor_push_key_press_config_##n = { 		   \
         .min_push = DT_INST_PROP(n, min_push), \
+        .dimensions = DT_INST_PROP(n, dimensions), \
+        .key_diff [0] = DT_INST_PROP(n, key_diff_x), \
+        .key_diff [1] = DT_INST_PROP(n, key_diff_y), \
         }; \
     DEVICE_DT_INST_DEFINE(n, behavior_sensor_push_key_press_init, NULL,   \
                           &sensor_push_key_press_data_##n,                \

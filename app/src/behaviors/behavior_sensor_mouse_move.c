@@ -16,50 +16,53 @@
 #include <zmk/mouse.h>
 #include <drivers/sensor.h>
 #include <zmk/hid.h>
+#include <zmk/endpoints.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #if DT_HAS_COMPAT_STATUS_OKAY(DT_DRV_COMPAT)
 
 struct behavior_sensor_mouse_move_config {
-  int speed, dimension;
+  int speed, dimensions;
 };
 
 static int behavior_sensor_mouse_move_init(const struct device *dev) { return 0; };
 
 static int on_sensor_binding_triggered(struct zmk_behavior_binding *binding,
                                        const struct device *sensor, int64_t timestamp) {
-    struct sensor_value value;
+    struct sensor_value value [2];
     int err;
-    uint32_t keycode;
     
     const struct device *dev = device_get_binding(binding->behavior_dev);
-    struct behavior_sensor_mouse_move_config *config = dev->config;
+    const struct behavior_sensor_mouse_move_config *config = dev->config;
     
+    for (int dim=0; dim<config->dimensions && dim<2; dim++) {
+        err = sensor_channel_get(sensor, SENSOR_CHAN_ACCEL_X+dim, &(value [dim]));
 
-    err = sensor_channel_get(sensor, SENSOR_CHAN_PRESS, &value);
+        if (err) {
+            LOG_WRN("Failed to ge sensor rotation value: %d", err);
+            return err;
+        }
 
-    if (err) {
-        LOG_WRN("Failed to ge sensor rotation value: %d", err);
-        return err;
+        LOG_DBG("push push dimension %d, value %d, input dimension: %d", binding->param1, value [dim].val1, dim);
     }
 
-    LOG_DBG("push push dimension %d, value %d, input dimension %d", binding->param1, value.val1, config->dimension);
-
-
-    // need to move mouse by value in dimension binding->param1
     int x=0, y=0;
-    int move = 0;
-    if (value.val1 != 0) {
-        move = (config->speed * value.val1 * value.val1) >> 20;
+    int move;
+    if (value [0].val1 != 0) {
+        move = (config->speed * value [0].val1 * value [0].val1) >> 20;
         move += 1;
-        if (value.val1 < 0) {
+        if (value [0].val1 < 0) {
             move = -move;
         }
-    }
-    if (binding->param1 == 0) {
         x += move;
-    } else if (binding->param1 == 1) {
+    }
+    if (value [1].val1 != 0) {
+        move = (config->speed * value [1].val1 * value [1].val1) >> 20;
+        move += 1;
+        if (value [1].val1 < 0) {
+            move = -move;
+        }
         y += move;
     }
     zmk_hid_mouse_movement_set (x, y);
@@ -73,7 +76,7 @@ static const struct behavior_driver_api behavior_sensor_mouse_move_driver_api = 
 #define KP_INST(n)                                                                                 \
     static struct behavior_sensor_mouse_move_config sensor_mouse_move_config_##n = { 		   \
         .speed = DT_INST_PROP(n, speed), \
-        .dimension = DT_INST_PROP(n, dimension), \
+        .dimensions = DT_INST_PROP(n, dimensions), \
         }; \
     DEVICE_DT_INST_DEFINE(n, behavior_sensor_mouse_move_init, NULL,   \
                           NULL,                                             \

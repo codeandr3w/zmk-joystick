@@ -1,26 +1,26 @@
 # Copyright (c) 2020 The ZMK Contributors
 # SPDX-License-Identifier: MIT
 
-description: Sensor push left/right key press behavior
+description: Sensor push left/right variable repeat key press behavior
 
-compatible: "zmk,behavior-sensor-push-key-press"
+compatible: "zmk,behavior-sensor-var-key-press"
 
 properties:
   label:
     type: string
     required: true
-  min_push:
+  dimensions:
     type: int
-    default: 512
+    default: 2
+  time:
+    type: int
+    default: 2048
   key_diff_x:
     type: int
     default: -1
   key_diff_y:
     type: int
     default: -1
-  dimensions:
-    type: int
-    default: 2
   "#sensor-binding-cells":
     type: int
     required: true

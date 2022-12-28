@@ -6,22 +6,12 @@
 
 / {
 	behaviors {
-		/omit-if-no-ref/ up_down_mmv: up_down_mm: behavior_sensor_mouse_move {
+		/omit-if-no-ref/ xy_mmv: xy_mm: behavior_sensor_mouse_move {
 			compatible = "zmk,behavior-sensor-mouse-move";
-			label = "SENSOR_MOUSE_MOVE_Y";
-			dimension = <1>;
+			label = "SENSOR_MOUSE_MOVE_XY";
+			dimensions = <2>;
 			speed = <16>;
-			#sensor-binding-cells = <1>;
-		};
-	};
-
-	behaviors {
-		/omit-if-no-ref/ left_right_mmv: left_right_mm: behavior_sensor_mouse_move {
-			compatible = "zmk,behavior-sensor-mouse-move";
-			label = "SENSOR_MOUSE_MOVE_X";
-			dimension = <0>;
-			speed = <16>;
-			#sensor-binding-cells = <1>;
+			#sensor-binding-cells = <0>;
 		};
 	};
 };

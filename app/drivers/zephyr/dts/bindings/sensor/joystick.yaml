@@ -27,3 +27,7 @@ properties:
     type: boolean
     required: false
     description: If true, then negative values are down/right    
+  num_axis:
+    type: int
+    required: true
+    description: Number of axis of movement to sense, ie number of ADCs
