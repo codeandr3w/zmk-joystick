@@ -42,6 +42,7 @@ enum rgb_underglow_effect {
     UNDERGLOW_EFFECT_BREATHE,
     UNDERGLOW_EFFECT_SPECTRUM,
     UNDERGLOW_EFFECT_SWIRL,
+    UNDERGLOW_EFFECT_BREATHE_GROW, // My new breathing effect
     UNDERGLOW_EFFECT_NUMBER // Used to track number of underglow effects
 };
 
@@ -144,6 +145,31 @@ static void zmk_rgb_underglow_effect_breathe() {
     }
 }
 
+static void zmk_rgb_underglow_effect_breathe_grow() {
+    for (int i = 0; i < STRIP_NUM_PIXELS; i++) {
+        struct zmk_led_hsb hsb = state.color;
+        int b = abs(state.animation_step - 1200) / 12;
+        int b1 = b - 100*abs(STRIP_NUM_PIXELS/2-i)/STRIP_NUM_PIXELS;
+        int b2 = b - 100*i/STRIP_NUM_PIXELS;
+        int b3 = b - 100*(STRIP_NUM_PIXELS-i)/STRIP_NUM_PIXELS;
+        if (b1<0) b1=0;
+        if (b2<0) b2=0;
+        if (b3<0) b3=0;
+        b = (b1 + b2 + b3) / 2;
+        if (b<0) b=0;
+        if (b>100) b=100;
+        hsb.b = b;
+
+        pixels[i] = hsb_to_rgb(hsb_scale_zero_max(hsb));
+    }
+
+    state.animation_step += state.animation_speed * 10;
+
+    if (state.animation_step > 2400) {
+        state.animation_step = 0;
+    }
+}
+
 static void zmk_rgb_underglow_effect_spectrum() {
     for (int i = 0; i < STRIP_NUM_PIXELS; i++) {
         struct zmk_led_hsb hsb = state.color;
@@ -181,6 +207,9 @@ static void zmk_rgb_underglow_tick(struct k_work *work) {
         break;
     case UNDERGLOW_EFFECT_SWIRL:
         zmk_rgb_underglow_effect_swirl();
+        break;
+    case UNDERGLOW_EFFECT_BREATHE_GROW:
+        zmk_rgb_underglow_effect_breathe_grow();
         break;
     }
 
