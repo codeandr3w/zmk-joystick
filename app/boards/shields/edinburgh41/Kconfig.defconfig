@@ -9,4 +9,10 @@ config ZMK_KEYBOARD_NAME
 config JOYSTICK
 	default y
 
+config ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE
+	default y
+
+config ZMK_RGB_UNDERGLOW_AUTO_OFF_USB
+	default y
+
 endif
